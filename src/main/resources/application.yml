@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    include:
+      - core
+      - ${ENVIRONMENT}
+  application:
+    name: redis-streams-demo
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    lettuce.pool:
+      min-idle: 5
+      max-idle: 10
+      max-active: 20
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME}?zeroDateTimeBehavior=convertToNull
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+
+cache:
+  consumer:
+    group: ${CATALOG_API_REDIS_STREAM_CONSUMER_GROUP:catalog.suspension.consumer.group}
+    stream-keys: ${CATALOG_API_REDIS_STREAM_KEYS:catalog.suspension.stream.1}
+    consumer-keys: ${CATALOG_API_REDIS_STREAM_CONSUMER_KEYS:catalog.suspension.consumer.1}
+    consumer-concurrency: ${CATALOG_API_REDIS_STREAM_CONSUMERS:1}
+    timeout-seconds: ${CATALOG_API_REDIS_STREAM_CONSUMER_TIMEOUT:35}
+    ts-update-rate-seconds: ${CATALOG_API_REDIS_STREAM_CONSUMER_UPDATE_RATE:30}
